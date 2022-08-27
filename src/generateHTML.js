@@ -1,14 +1,14 @@
 function generateHTML(employees) {
-    const cardsArray = employees.map((emp)=>   {
-        let lastItem;
-        if (emp.getRole() === 'Manager')    {
-            lastItem = `Office Number: ${emp.officeNumber}`
-        }   else if (emp.getRole() === 'Engineer') {
-            lastItem = `Github: ${emp.github}`
-        }   else    {
-            lastItem = `School: ${emp.school}`
-        }
-        return `<div class="card" style="width: 18rem;">
+  const cardsArray = employees.map((emp) => {
+    let lastItem;
+    if (emp.getRole() === "Manager") {
+      lastItem = `Office Number: ${emp.officeNumber}`;
+    } else if (emp.getRole() === "Engineer") {
+      lastItem = `Github: ${emp.github}`;
+    } else {
+      lastItem = `School: ${emp.school}`;
+    }
+    return `<div class="card" style="width: 18rem;">
         <div class="card-header">${emp.name}</div>
         <div class="card-body">
           <ul class="list-group">
@@ -17,10 +17,10 @@ function generateHTML(employees) {
             <li class="list-group-item">${lastItem}</li>
           </ul>
         </div>
-      </div>`
-    })
-    let cardsString = cardsArray.join('')
-    return `<!DOCTYPE html>
+      </div>`;
+  });
+  let cardsString = cardsArray.join("");
+  return `<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -49,7 +49,7 @@ function generateHTML(employees) {
         ${cardsString}
     </div>
     </body>
-    </html>`
+    </html>`;
 }
 
-module.exports = generateHTML
+module.exports = generateHTML;
