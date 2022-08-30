@@ -2,6 +2,7 @@ const inquirer = require("inquirer");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
+const fs = require('fs');
 const generateHTML = require("./src/generateHTML");
 var team = [];
 
@@ -123,7 +124,13 @@ function addIntern() {
 
 function completeTeam() {
   let HTMLString = generateHTML(team);
-  console.log(HTMLString);
+  fs.writeFile('./dist/team.html', HTMLString, 'utf8', (err)=>  {
+    if (err)  {
+      console.log(err)
+    } else{
+      console.log('Team Profile generated')
+    }
+  })
 }
 
 function start() {

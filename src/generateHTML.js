@@ -8,8 +8,9 @@ function generateHTML(employees) {
     } else {
       lastItem = `School: ${emp.school}`;
     }
-    return `<div class="card" style="width: 18rem;">
-        <div class="card-header">${emp.name}</div>
+    return `
+    <div class="card" style="width: 18rem;">
+        <div class="card-header card text-bg-primary mb-3">${emp.name}</div>
         <div class="card-body">
           <ul class="list-group">
             <li class="list-group-item">id:${emp.id}</li>
@@ -17,16 +18,20 @@ function generateHTML(employees) {
             <li class="list-group-item">${lastItem}</li>
           </ul>
         </div>
-      </div>`;
+      </div>
+      `;
   });
+
   let cardsString = cardsArray.join("");
-  return `<!DOCTYPE html>
-    <html lang="en">
+
+  return `
+  <!DOCTYPE html>
+  <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Team Profile</title>
+        <title>PRO-file Team Maker</title>
         <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
@@ -44,12 +49,13 @@ function generateHTML(employees) {
     </style>
     </head>
     <body>
-    <header>My Team</header>
+    <header class="p-3 mb-2 bg-danger text-white text-center fs-1">My Team</header>
     <div class="employee-cards">
         ${cardsString}
     </div>
     </body>
-    </html>`;
+    </html>
+    `;
 }
 
 module.exports = generateHTML;
