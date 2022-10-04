@@ -1,28 +1,26 @@
 function generateHTML(employees) {
-  const cardsArray = employees.map((emp) => {
-    let lastItem;
-    if (emp.getRole() === "Manager") {
-      lastItem = `Office Number: ${emp.officeNumber}`;
-    } else if (emp.getRole() === "Engineer") {
-      lastItem = `Github: ${emp.github}`;
-    } else {
-      lastItem = `School: ${emp.school}`;
-    }
-    return `
-    <div class="card" style="width: 18rem;">
-        <div class="card-header card text-bg-primary mb-3">${emp.name}</div>
-        <div class="card-body">
-          <ul class="list-group">
-            <li class="list-group-item">id:${emp.id}</li>
-            <li class="list-group-item">email:${emp.email}</li>
-            <li class="list-group-item">${lastItem}</li>
-          </ul>
-        </div>
-      </div>
-      `;
-  });
 
-  let cardsString = cardsArray.join("");
+  let htmlBodyString = ""
+  for (let i = 0; i < employees.length; i++)  {
+    let lastItem;
+    if (employees[i].getRole() === "Manager") {
+      lastItem = `Office Number: ${employees[i].officeNumber}`;
+    } else if (employees[i].getRole() === "Engineer") {
+      lastItem = `Github: ${employees[i].github}`;
+    } else {
+      lastItem = `School: ${employees[i].school}`;
+    }
+    htmlBodyString += ` <div class="card" style="width: 18rem;">
+    <div class="card-header card text-bg-primary mb-3">${employees[i].name}</div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li class="list-group-item">id:${employees[i].id}</li>
+        <li class="list-group-item">email:${employees[i].email}</li>
+        <li class="list-group-item">${lastItem}</li>
+      </ul>
+    </div>
+  </div>`
+  }
 
   return `
   <!DOCTYPE html>
@@ -51,7 +49,7 @@ function generateHTML(employees) {
     <body>
     <header class="p-3 mb-2 bg-danger text-white text-center fs-1">My Team</header>
     <div class="employee-cards">
-        ${cardsString}
+        ${htmlBodyString}
     </div>
     </body>
     </html>

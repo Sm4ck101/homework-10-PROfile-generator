@@ -2,76 +2,48 @@ const inquirer = require("inquirer");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
-const fs = require('fs');
+const fs = require("fs");
 const generateHTML = require("./src/generateHTML");
 var team = [];
 
-const managerQuestions = [
+var introPrompt = [
   {
     type: "input",
     name: "name",
-    message: "What is the manager's name?",
+    message: "Enter employee's name:",
   },
   {
     type: "input",
     name: "id",
-    message: "What is the manager's id?",
+    message: "Enter employee's id:",
   },
   {
     type: "input",
     name: "email",
-    message: "What is the manager's email?",
+    message: "Enter employee's email:",
+  },
+];
+
+const managerQuery = [
+  {
+    type: "input",
+    name: "name",
+    message: "Enter manager's name:",
+  },
+  {
+    type: "input",
+    name: "id",
+    message: "Enter manager's id:",
+  },
+  {
+    type: "input",
+    name: "email",
+    message: "Enter manager's email:",
   },
   {
     type: "input",
     name: "officeNumber",
-    message: "What is the manager's office number?",
-  },
-];
-
-const engineerQuestions = [
-  {
-    type: "input",
-    name: "name",
-    message: "What is the engineer's name?",
-  },
-  {
-    type: "input",
-    name: "id",
-    message: "What is the engineer's id?",
-  },
-  {
-    type: "input",
-    name: "email",
-    message: "What is the engineer's email?",
-  },
-  {
-    type: "input",
-    name: "github",
-    message: "What is the engineer's github?",
-  },
-];
-
-const internQuestions = [
-  {
-    type: "input",
-    name: "name",
-    message: "What is the intern's name?",
-  },
-  {
-    type: "input",
-    name: "id",
-    message: "What is the intern's id?",
-  },
-  {
-    type: "input",
-    name: "email",
-    message: "What is the intern's email?",
-  },
-  {
-    type: "input",
-    name: "school",
-    message: "What is the intern's school?",
+    message: "Enter manager's office number:",
   },
 ];
 
@@ -84,57 +56,42 @@ const nextQuestion = [
   },
 ];
 
-function askNextQuestion() {
-  inquirer.prompt(nextQuestion).then((answers) => {
-    if (answers.option === "Add an Intern") {
-      addIntern();
-    } else if (answers.option === "Add an Engineer") {
-      addEngineer();
+function addEmployee(chosenRole)  {
+  inquirer.prompt(introPrompt).then((answers) => {
+    if (chosenRole === "Add an Intern") {
+      inquirer.prompt([{type: "input", name: "school", message: "What is the intern's school?"}]).then((internAnswer)  =>  {
+        const newIntern = new Intern(answers.id, answers.name, answers.email, internAnswer.school);
+        team.push(newIntern)
+        askNextQuestion()
+      })
     } else {
-      completeTeam();
-    }
-  });
-}
-
-function addEngineer() {
-  inquirer.prompt(engineerQuestions).then((answers) => {
-    const engineer = new Engineer(
-      answers.id,
-      answers.name,
-      answers.email,
-      answers.github
-    );
-    team.push(engineer);
-    askNextQuestion();
-  });
-}
-
-function addIntern() {
-  inquirer.prompt(internQuestions).then((answers) => {
-    const intern = new Intern(
-      answers.id,
-      answers.name,
-      answers.email,
-      answers.school
-    );
-    team.push(intern);
-    askNextQuestion();
-  });
-}
-
-function completeTeam() {
-  let HTMLString = generateHTML(team);
-  fs.writeFile('./dist/team.html', HTMLString, 'utf8', (err)=>  {
-    if (err)  {
-      console.log(err)
-    } else{
-      console.log('Team Profile generated')
+      inquirer.prompt([{type: "input", name: "github", message: "What is the engineer's github?"}]).then((engineerAnswer)  =>  {
+        const newEngineer = new Engineer(answers.id, answers.name, answers.email, engineerAnswer.github);
+        team.push(newEngineer)
+        askNextQuestion()
+      })
     }
   })
 }
 
+function askNextQuestion() {
+  inquirer.prompt(nextQuestion).then((answers) => {
+    if (answers.option === "Add an Intern" || answers.option === "Add an Engineer") {
+      addEmployee(answers.option)
+    } else {
+      fs.writeFile("./dist/team.html", generateHTML(team), "utf8", (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Team Profile generated");
+        }
+      });
+    }
+  });
+}
+
 function start() {
-  inquirer.prompt(managerQuestions).then((answers) => {
+  inquirer.prompt(managerQuery).then((answers) => {
     const manager = new Manager(
       answers.id,
       answers.name,
